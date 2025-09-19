@@ -1,59 +1,53 @@
-📚 Smart Study Planner
+# 📘 Smart Study Planner
 
-A modern, responsive web application built with HTML, CSS, and JavaScript to help students plan their study tasks, track progress, and stay organized.
+A modern, responsive **task management web app** designed for students to plan, track, and achieve their study goals.  
+Built with **HTML, CSS, JavaScript** and enhanced with **Chart.js visualizations** & glassmorphism UI.  
 
-🚀 Features
+🔗 **Live Demo**: (https://smart-study-planner1-8nkm.vercel.app/)
 
-✅ Add, Edit, Delete Tasks – manage your study goals easily
+---
 
-⏰ Set Deadlines – tasks with due dates to stay on track
+## ✨ Features
 
-📊 Progress Tracker – dynamic progress bar + stats (Total, Completed, Pending)
+- ➕ Add, ✏️ Edit, 🗑️ Delete tasks  
+- ✅ Mark tasks as completed  
+- ⏰ Set deadlines → auto display in Timeline  
+- 📊 Interactive Charts (Pie chart for progress, Bar chart for categories)  
+- 🔍 Search tasks by title/category  
+- 🟢 Priority levels (Low, Medium, High)  
+- 📚 Categories (Homework, Revision, Project, Exam) with icons  
+- 🌙 Light/Dark Mode toggle  
+- 💾 Local Storage support (data saved even after refresh)  
+- 🎨 Glassmorphism UI + background animations  
+- 📱 Fully responsive (desktop + mobile)
 
-📅 Timeline View – see upcoming deadlines in a clean layout
+## 🛠 Tech Stack  
 
-🌗 Light/Dark Mode – toggle between themes with one click
+- **Frontend** → HTML, CSS, JavaScript  
+- **Charts** → Chart.js  
+- **Deployment** → GitHub Pages / Vercel  
 
-💾 Local Storage Support – data saved even after page refresh
+---
 
-✨ Animations – smooth transitions, hover effects, and interactive feedback
+## 🚀 Installation & Usage  
 
-🎨 Modern UI – soft pastel colors, rounded task cards, gradient highlights
+1. Clone the repo:
+   ```bash
+   git clone--> https://github.com/Aviraltrivedi7/Smart-Study-Planner1/edit/main/README.md
+Open index.html in your browser.
 
-🛠️ Tech Stack
+Start adding tasks 🎉
 
-Frontend: HTML5, CSS3, JavaScript (Vanilla)
+📌 Future Improvements
+🔔 Notifications & Reminders
 
-Storage: Local Storage (no backend required)
+☁️ Cloud sync with login system
 
-Animations: CSS keyframes, transitions, micro-interactions
+📅 Calendar integration
 
-🔧 How to Run Locally
+📤 Export/Import tasks as JSON
 
-Clone this repository or download the source code.
-
-git clone(https://github.com/Aviraltrivedi7/Smart-Study-Planner1/new/main?filename=README.md)
-
-Open the index.html file in your browser.
-
-Start adding your study tasks 🚀
-
-🌟 Future Enhancements
-
-Task categories (e.g., Homework, Revision, Projects)
-
-Notifications / Reminders
-
-Cloud sync with login system
-
-Export/Import tasks as JSON
-
-💡 Motivation
-
-Traditional to-do apps don’t focus on students’ study needs.
-Smart Study Planner is designed to keep academic goals organized, trackable, and visually engaging.
-
-✍️ Author
-
-Developed by [AVIRAL TRIVEDI] ✨
-“Plan smart. Study smarter.”
+👨‍💻 Author
+Aviral Trivedi
+🎓 IIT Madras'28 | BS in Data Science
+💡 Passionate about Generative AI & Web Development
