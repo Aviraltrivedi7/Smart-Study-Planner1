@@ -1,0 +1,20 @@
+:root {
+    --primary-light: #a3d8f4;
+    --primary: #6c9bcf;
+    --primary-dark: #4a72a8;
+    --secondary: #83c5be;
+    --secondary-light: #a7e8d8;
+    --accent: #b8b0ff;
+    --accent-light: #d6d2ff;
+    --text: #2d3748;
+    --text-muted: #718096;
+    --bg-light: #faf7f5;
+    --bg-dark: #121826;
+    --card-bg-light: #ffffff;
+    --card-bg-dark: #1a2436;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+    --border-radius: 16px;
+}
+/* ...tumhara baaki CSS yaha paste karo */
