@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Smart Study Planner</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body data-theme="light">
-  
+
   <!-- Background Animation -->
   <div class="background-animation">
       <span></span><span></span><span></span><span></span><span></span>
@@ -27,80 +28,74 @@
   </header>
 
   <!-- Hero -->
-  <main>
-      <section class="hero">
-          <h1>Organize Your Study Journey</h1>
-          <p>Plan your tasks, track your progress, and achieve your academic goals with ease</p>
-      </section>
+  <section class="hero">
+      <h1>Organize Your Study Journey</h1>
+      <p>Plan your tasks, track your progress, and achieve your academic goals with ease 🚀</p>
+      <button onclick="document.getElementById('task-form').scrollIntoView({behavior:'smooth'})">Start Planning</button>
+  </section>
 
-      <!-- Form -->
-      <form id="task-form">
-          <div class="form-section">
-              <label for="title">Title *</label>
-              <input type="text" id="title" required placeholder="What do you need to study?">
-          </div>
-          <div class="form-section">
-              <label for="deadline">Deadline *</label>
+  <!-- Dashboard Layout -->
+  <main class="dashboard">
+      <!-- Left: Tasks -->
+      <div class="left-panel">
+          <!-- Task Form -->
+          <form id="task-form" class="glass-card">
+              <h2>Add New Task</h2>
+              <input type="text" id="title" required placeholder="Task Title">
               <input type="date" id="deadline" required>
-          </div>
-          <div class="form-section">
-              <label for="category">Category</label>
               <select id="category">
-                  <option value="Homework">Homework</option>
-                  <option value="Revision">Revision</option>
-                  <option value="Project">Project</option>
-                  <option value="Exam">Exam</option>
+                  <option value="Homework">📚 Homework</option>
+                  <option value="Revision">🔄 Revision</option>
+                  <option value="Project">💻 Project</option>
+                  <option value="Exam">✏️ Exam</option>
               </select>
-          </div>
-          <div class="form-section">
-              <label for="priority">Priority</label>
               <select id="priority">
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
+                  <option value="Low">🟢 Low</option>
+                  <option value="Medium">🟡 Medium</option>
+                  <option value="High">🔴 High</option>
               </select>
-          </div>
-          <div class="form-section full-width">
-              <label for="description">Description</label>
-              <textarea id="description" placeholder="Add details about this study task..."></textarea>
-          </div>
-          <button type="submit">+ Add Task</button>
-      </form>
+              <textarea id="description" placeholder="Details..."></textarea>
+              <button type="submit">+ Add Task</button>
+          </form>
 
-      <!-- Search -->
-      <section>
-          <input type="text" id="search-bar" placeholder="Search tasks...">
-      </section>
+          <!-- Search -->
+          <input type="text" id="search-bar" placeholder="🔍 Search tasks..." class="glass-card">
 
-      <!-- Stats -->
-      <div class="stats-container">
-          <div class="stat-card"><div class="stat-value" id="total-tasks">0</div><div class="stat-label">Total</div></div>
-          <div class="stat-card"><div class="stat-value" id="completed-tasks">0</div><div class="stat-label">Completed</div></div>
-          <div class="stat-card"><div class="stat-value" id="pending-tasks">0</div><div class="stat-label">Pending</div></div>
+          <!-- Tasks -->
+          <section id="tasks-container"></section>
       </div>
 
-      <!-- Progress -->
-      <section class="progress-section">
-          <div class="progress-header">
-              <div class="progress-title">Overall Progress</div>
-              <div class="progress-percentage" id="progress-percent">0%</div>
+      <!-- Right: Stats -->
+      <div class="right-panel">
+          <!-- Stats -->
+          <div class="stats-container glass-card">
+              <div class="stat-card"><div class="stat-value" id="total-tasks">0</div><div class="stat-label">Total</div></div>
+              <div class="stat-card"><div class="stat-value" id="completed-tasks">0</div><div class="stat-label">Completed</div></div>
+              <div class="stat-card"><div class="stat-value" id="pending-tasks">0</div><div class="stat-label">Pending</div></div>
           </div>
-          <div id="progress-container"><div id="progress-bar"></div></div>
-      </section>
 
-      <!-- Tasks -->
-      <section id="tasks-container"></section>
+          <!-- Progress -->
+          <div class="glass-card">
+              <h3>Overall Progress</h3>
+              <canvas id="progressChart"></canvas>
+          </div>
 
-      <!-- Timeline -->
-      <section id="timeline">
-          <h2>Upcoming Deadlines</h2>
-          <ul class="timeline-list" id="timeline-list"></ul>
-      </section>
+          <!-- Categories -->
+          <div class="glass-card">
+              <h3>Tasks by Category</h3>
+              <canvas id="categoryChart"></canvas>
+          </div>
+
+          <!-- Timeline -->
+          <div class="glass-card">
+              <h3>Upcoming Deadlines</h3>
+              <ul class="timeline-list" id="timeline-list"></ul>
+          </div>
+      </div>
   </main>
 
   <footer>
       <div class="footer-quote">"Plan smart. Study smarter."</div>
-      <div class="footer-subtext">Your journey to academic success starts here</div>
   </footer>
 
   <script src="script.js"></script>
