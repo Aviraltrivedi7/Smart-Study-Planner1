@@ -1,140 +1,130 @@
-// your code goes here
-let streak = 0;
-let tasks = [];
-let timer;
-let timeLeft = 1500; // 25 mins in seconds
-let running = false;
-let weeklyData = [0, 0, 0, 0, 0, 0, 0]; // Mon-Sun
+// ✅ Task Management
+const taskInput = document.getElementById("task-input");
+const addTaskBtn = document.getElementById("add-task");
+const taskList = document.getElementById("task-list");
 
-// Add Task
-function addTask() {
-  const taskInput = document.getElementById("taskInput");
-  if (taskInput.value === "") return;
-  tasks.push({ text: taskInput.value, done: false });
-  taskInput.value = "";
-  renderTasks();
-}
-
-function toggleTask(index) {
-  tasks[index].done = !tasks[index].done;
-  renderTasks();
-  updateProgress();
-}
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 function renderTasks() {
-  const container = document.getElementById("taskContainer");
-  container.innerHTML = "";
-  tasks.forEach((task, i) => {
+  taskList.innerHTML = "";
+  tasks.forEach((task, index) => {
     const li = document.createElement("li");
-    li.innerHTML = `
-      <input type="checkbox" ${task.done ? "checked" : ""} onclick="toggleTask(${i})">
-      ${task.text}
-    `;
-    container.appendChild(li);
+    li.textContent = task.text;
+    if (task.completed) li.classList.add("completed");
+    li.draggable = true;
+
+    li.addEventListener("click", () => toggleTask(index));
+    li.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("index", index);
+    });
+    li.addEventListener("dragover", e => e.preventDefault());
+    li.addEventListener("drop", e => {
+      let draggedIndex = e.dataTransfer.getData("index");
+      [tasks[draggedIndex], tasks[index]] = [tasks[index], tasks[draggedIndex]];
+      saveTasks();
+    });
+
+    taskList.appendChild(li);
   });
 }
 
-function updateProgress() {
-  const doneTasks = tasks.filter(t => t.done).length;
-  const percent = tasks.length ? Math.round((doneTasks / tasks.length) * 100) : 0;
-  document.getElementById("progressFill").style.width = percent + "%";
-  document.getElementById("progressText").textContent = percent + "% Completed";
-
-  if (percent === 100) {
-    streak++;
-    document.getElementById("streak").textContent = streak;
-    awardBadge();
-    updateWeeklyProgress();
-    notifyUser("🎉 Great job! You completed all tasks today!");
-  }
+function addTask() {
+  if (taskInput.value.trim() === "") return;
+  tasks.push({ text: taskInput.value, completed: false });
+  taskInput.value = "";
+  saveTasks();
 }
 
-// Gamification Badge
-function awardBadge() {
-  let badge = "No Badge";
-  if (streak >= 3 && streak < 7) badge = "Bronze 🥉";
-  else if (streak >= 7 && streak < 14) badge = "Silver 🥈";
-  else if (streak >= 14) badge = "Gold 🥇";
-  document.getElementById("badge").textContent = badge;
+function toggleTask(index) {
+  tasks[index].completed = !tasks[index].completed;
+  saveTasks();
 }
 
-// Pomodoro Timer
-function startTimer() {
-  if (running) return;
-  running = true;
-  timer = setInterval(() => {
-    if (timeLeft > 0) {
-      timeLeft--;
-      updateTimerDisplay();
-    } else {
-      clearInterval(timer);
-      running = false;
-      notifyUser("⏰ Time's up! Take a break.");
-    }
-  }, 1000);
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  renderTasks();
+  updateChart();
+  updateStreak();
 }
 
-function pauseTimer() {
-  clearInterval(timer);
-  running = false;
-}
+addTaskBtn.addEventListener("click", addTask);
+renderTasks();
 
-function resetTimer() {
-  clearInterval(timer);
-  running = false;
-  timeLeft = 1500;
-  updateTimerDisplay();
-}
+// ✅ Dark Mode Toggle
+const themeToggle = document.getElementById("theme-toggle");
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+});
 
-function updateTimerDisplay() {
-  let minutes = Math.floor(timeLeft / 60);
-  let seconds = timeLeft % 60;
-  document.getElementById("timer").textContent =
-    `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-}
-
-// Notifications
-function notifyUser(msg) {
-  if (Notification.permission === "granted") {
-    new Notification(msg);
-  } else if (Notification.permission !== "denied") {
-    Notification.requestPermission().then(p => {
-      if (p === "granted") new Notification(msg);
-    });
-  } else {
-    alert(msg);
-  }
-}
-
-// Weekly Progress Chart (Chart.js)
-const ctx = document.getElementById("weeklyChart").getContext("2d");
-let weeklyChart = new Chart(ctx, {
-  type: "bar",
+// ✅ Progress Chart
+const ctx = document.getElementById("progressChart");
+let progressChart = new Chart(ctx, {
+  type: 'doughnut',
   data: {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    labels: ["Completed", "Pending"],
     datasets: [{
-      label: "Tasks Completed",
-      data: weeklyData,
-      backgroundColor: "rgba(75, 192, 192, 0.6)",
-      borderRadius: 10
+      data: [0, 0],
+      backgroundColor: ["#4CAF50", "#f44336"]
     }]
-  },
-  options: {
-    responsive: true,
-    scales: {
-      y: { beginAtZero: true }
-    }
   }
 });
 
-function updateWeeklyProgress() {
-  const today = new Date().getDay(); // Sun=0, Mon=1...
-  const dayIndex = today === 0 ? 6 : today - 1; // make Mon=0
-  weeklyData[dayIndex] += tasks.length;
-  weeklyChart.update();
+function updateChart() {
+  const completed = tasks.filter(t => t.completed).length;
+  const pending = tasks.length - completed;
+  progressChart.data.datasets[0].data = [completed, pending];
+  progressChart.update();
+}
+updateChart();
+
+// ✅ Calendar
+const calendar = document.getElementById("calendar");
+function renderCalendar() {
+  const today = new Date();
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  calendar.innerHTML = "";
+  for (let i = 1; i <= daysInMonth; i++) {
+    const day = document.createElement("div");
+    day.textContent = i;
+    if (i === today.getDate()) day.classList.add("today");
+    calendar.appendChild(day);
+  }
+}
+renderCalendar();
+
+// ✅ Gamification
+let streak = parseInt(localStorage.getItem("streak")) || 0;
+const streakCounter = document.getElementById("streak-counter");
+const badgesDiv = document.getElementById("badges");
+
+function updateStreak() {
+  const completedToday = tasks.some(t => t.completed);
+  if (completedToday) {
+    streak++;
+    localStorage.setItem("streak", streak);
+  }
+  streakCounter.textContent = `Current Streak: ${streak} days`;
+  updateBadges();
 }
 
-// Dark Mode Toggle
-document.getElementById("darkToggle").addEventListener("click", () => {
-  document.body.classList.toggle("dark-mode");
+function updateBadges() {
+  badgesDiv.innerHTML = "";
+  if (streak >= 3) badgesDiv.innerHTML += `<span class="badge">🔥 3 Day Streak</span>`;
+  if (streak >= 7) badgesDiv.innerHTML += `<span class="badge">🏆 7 Day Streak</span>`;
+  if (streak >= 30) badgesDiv.innerHTML += `<span class="badge">🌟 30 Day Legend</span>`;
+}
+updateStreak();
+
+// ✅ Notifications
+const notifyBtn = document.getElementById("notify-btn");
+notifyBtn.addEventListener("click", () => {
+  if (Notification.permission === "granted") {
+    new Notification("📖 Time to study! Stay consistent 💪");
+  } else {
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") {
+        new Notification("📖 Reminder enabled!");
+      }
+    });
+  }
 });
