@@ -1,103 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Smart Study Planner</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Smart Study Planner — Demo</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root{--card-bg:rgba(255,255,255,0.92);--accent:#4caf50;--text:#111;}
+    *{box-sizing:border-box}
+    body{
+      margin:0;padding:0;font-family:Inter,Arial,sans-serif;
+      background:linear-gradient(135deg,#89f7fe,#66a6ff,#ff9a9e);
+      background-size:400% 400%;animation:gradientBG 12s ease infinite;
+      color:var(--text);overflow-x:hidden;min-height:100vh;
+    }
+    @keyframes gradientBG{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    header{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:16px 20px;background:rgba(0,0,0,0.5);color:#fff;
+    }
+    .author-top{font-size:14px;font-weight:bold;color:#ffd700}
+    .container{width:1100px;max-width:96%;margin:20px auto;
+      display:grid;grid-template-columns:1fr 360px;gap:18px}
+    .panel{background:var(--card-bg);border-radius:14px;padding:16px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+    .add-row{display:flex;gap:10px;margin-bottom:10px}
+    .add-row input{flex:1;padding:10px;border-radius:10px;border:1px solid #ccc}
+    .btn{padding:9px 12px;border:none;border-radius:10px;cursor:pointer;color:#fff;background:var(--accent)}
+    .btn.secondary{background:#1976d2}
+    ul.tasks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+    ul.tasks li{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:#f6f9ff}
+    ul.tasks li.completed{text-decoration:line-through;opacity:0.7}
+    .progress-bar{width:100%;height:14px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0}
+    .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#60d394,#2fbf7f)}
+    .timer{text-align:center}
+    .timer #timerDisplay{font-size:26px;font-weight:700;margin:12px 0}
+    footer{text-align:center;color:#fff;padding:10px;background:rgba(0,0,0,0.6);font-weight:bold}
+  </style>
 </head>
-<body data-theme="light">
+<body>
 
-  <!-- Background Animation -->
-  <div class="background-animation">
-      <span></span><span></span><span></span><span></span><span></span>
-  </div>
-
-  <!-- Header -->
   <header>
-      <a href="#" class="logo">
-          <div class="logo-icon">
-              <svg viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-          </div>
-          <span class="app-title">Smart Study Planner</span>
-      </a>
-      <button class="mode-toggle" aria-label="Toggle light/dark mode">🌙</button>
+    <h1>📚 Smart Study Planner</h1>
+    <div class="author-top">MADE BY AVIRAL TRIVEDI</div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-      <h1>Organize Your Study Journey</h1>
-      <p>Plan your tasks, track your progress, and achieve your academic goals with ease 🚀</p>
-      <button onclick="document.getElementById('task-form').scrollIntoView({behavior:'smooth'})">Start Planning</button>
-  </section>
+  <main class="container">
+    <!-- LEFT -->
+    <div>
+      <!-- Tasks -->
+      <section class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="font-weight:700">Today's Tasks</div>
+          <div style="font-size:13px;color:gray">Quick add + Pomodoro</div>
+        </div>
+        <div class="add-row">
+          <input id="taskInput" placeholder="Enter new task..." />
+          <button class="btn" id="addBtn">➕ Add</button>
+        </div>
+        <ul class="tasks" id="taskContainer">
+          <!-- ✅ Preloaded sample tasks -->
+          <li><input type="checkbox"> Revise Algebra (30 min)</li>
+          <li><input type="checkbox"> Physics – Optics Notes</li>
+          <li><input type="checkbox"> Chemistry – Organic Practice</li>
+          <li><input type="checkbox"> English Essay Draft</li>
+          <li><input type="checkbox"> Daily Revision (15 min)</li>
+        </ul>
+      </section>
 
-  <!-- Dashboard Layout -->
-  <main class="dashboard">
-      <!-- Left: Tasks -->
-      <div class="left-panel">
-          <!-- Task Form -->
-          <form id="task-form" class="glass-card">
-              <h2>Add New Task</h2>
-              <input type="text" id="title" required placeholder="Task Title">
-              <input type="date" id="deadline" required>
-              <select id="category">
-                  <option value="Homework">📚 Homework</option>
-                  <option value="Revision">🔄 Revision</option>
-                  <option value="Project">💻 Project</option>
-                  <option value="Exam">✏️ Exam</option>
-              </select>
-              <select id="priority">
-                  <option value="Low">🟢 Low</option>
-                  <option value="Medium">🟡 Medium</option>
-                  <option value="High">🔴 High</option>
-              </select>
-              <textarea id="description" placeholder="Details..."></textarea>
-              <button type="submit">+ Add Task</button>
-          </form>
+      <!-- Progress -->
+      <section class="panel" style="margin-top:14px">
+        <div style="font-weight:700;margin-bottom:8px">Progress</div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <p id="progressText">0% Completed</p>
+        <p>🔥 Streak: <span id="streak">0</span> days | 🏅 <span id="badge">No Badge</span></p>
+      </section>
 
-          <!-- Search -->
-          <input type="text" id="search-bar" placeholder="🔍 Search tasks..." class="glass-card">
+      <!-- Weekly Chart -->
+      <section class="panel" style="margin-top:14px">
+        <div style="font-weight:700;margin-bottom:8px">Weekly Progress</div>
+        <canvas id="weeklyChart"></canvas>
+      </section>
+    </div>
 
-          <!-- Tasks -->
-          <section id="tasks-container"></section>
-      </div>
+    <!-- RIGHT -->
+    <aside>
+      <!-- Pomodoro -->
+      <section class="panel timer">
+        <div style="font-weight:700">Pomodoro Timer</div>
+        <div id="timerDisplay">25:00</div>
+        <button class="btn" id="startTimerBtn">Start</button>
+        <button class="btn" id="pauseTimerBtn">Pause</button>
+        <button class="btn" id="resetTimerBtn">Reset</button>
+      </section>
 
-      <!-- Right: Stats -->
-      <div class="right-panel">
-          <!-- Stats -->
-          <div class="stats-container glass-card">
-              <div class="stat-card"><div class="stat-value" id="total-tasks">0</div><div class="stat-label">Total</div></div>
-              <div class="stat-card"><div class="stat-value" id="completed-tasks">0</div><div class="stat-label">Completed</div></div>
-              <div class="stat-card"><div class="stat-value" id="pending-tasks">0</div><div class="stat-label">Pending</div></div>
-          </div>
-
-          <!-- Progress -->
-          <div class="glass-card">
-              <h3>Overall Progress</h3>
-              <canvas id="progressChart"></canvas>
-          </div>
-
-          <!-- Categories -->
-          <div class="glass-card">
-              <h3>Tasks by Category</h3>
-              <canvas id="categoryChart"></canvas>
-          </div>
-
-          <!-- Timeline -->
-          <div class="glass-card">
-              <h3>Upcoming Deadlines</h3>
-              <ul class="timeline-list" id="timeline-list"></ul>
-          </div>
-      </div>
+      <!-- ✅ Quick Actions -->
+      <section class="panel" style="margin-top:14px">
+        <div style="font-weight:700;margin-bottom:8px">Quick Actions</div>
+        <div style="font-size:13px;color:gray;margin-bottom:10px">Extras</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="btn" id="completeAllBtn">Mark all done ✅</button>
+          <button class="btn secondary" id="clearDoneBtn">Remove completed ✖</button>
+          <button class="btn" id="exportBtn">Export tasks (.json)</button>
+        </div>
+      </section>
+    </aside>
   </main>
 
   <footer>
-      <div class="footer-quote">"Plan smart. Study smarter."</div>
+    MADE BY AVIRAL TRIVEDI
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    let streak=0,timeLeft=1500,timer=null;
+    const progressFill=document.getElementById("progressFill");
+    const progressText=document.getElementById("progressText");
+    const streakEl=document.getElementById("streak");
+    const badgeEl=document.getElementById("badge");
+    const timerDisplay=document.getElementById("timerDisplay");
+
+    // Add Task
+    document.getElementById("addBtn").onclick=()=>{
+      const input=document.getElementById("taskInput");
+      if(input.value.trim()!==""){
+        const li=document.createElement("li");
+        li.innerHTML=`<input type="checkbox"> ${input.value}`;
+        document.getElementById("taskContainer").appendChild(li);
+        input.value="";
+      }
+    };
+
+    // Update Progress
+    document.getElementById("taskContainer").addEventListener("change",updateProgressUI);
+    function updateProgressUI(){
+      const boxes=document.querySelectorAll("#taskContainer input[type=checkbox]");
+      const done=[...boxes].filter(c=>c.checked).length;
+      const total=boxes.length;
+      const percent=Math.round((done/total)*100);
+      progressFill.style.width=percent+"%";
+      progressText.textContent=percent+"% Completed";
+      if(done===total && total>0){streak++;streakEl.textContent=streak;awardBadge();}
+    }
+    function awardBadge(){
+      let b="No Badge";
+      if(streak>=3&&streak<7)b="Bronze 🥉";
+      else if(streak>=7&&streak<14)b="Silver 🥈";
+      else if(streak>=14)b="Gold 🥇";
+      badgeEl.textContent=b;
+    }
+
+    // Pomodoro
+    function updateTimerDisplay(){let m=Math.floor(timeLeft/60),s=timeLeft%60;timerDisplay.textContent=`${m}:${s<10?"0":""}${s}`;}
+    document.getElementById("startTimerBtn").onclick=()=>{if(timer)return;timer=setInterval(()=>{if(timeLeft>0){timeLeft--;updateTimerDisplay();}else{clearInterval(timer);timer=null;alert("⏰ Time's up!");timeLeft=1500;updateTimerDisplay();}},1000);};
+    document.getElementById("pauseTimerBtn").onclick=()=>{clearInterval(timer);timer=null;};
+    document.getElementById("resetTimerBtn").onclick=()=>{clearInterval(timer);timer=null;timeLeft=1500;updateTimerDisplay();};
+    updateTimerDisplay();
+
+    // Quick Actions
+    document.getElementById("completeAllBtn").onclick=()=>{
+      document.querySelectorAll("#taskContainer input[type=checkbox]").forEach(cb=>cb.checked=true);
+      updateProgressUI();
+    };
+    document.getElementById("clearDoneBtn").onclick=()=>{
+      document.querySelectorAll("#taskContainer input[type=checkbox]:checked").forEach(cb=>cb.parentElement.remove());
+      updateProgressUI();
+    };
+    document.getElementById("exportBtn").onclick=()=>{
+      const tasks=[];
+      document.querySelectorAll("#taskContainer li").forEach(li=>{
+        const text=li.innerText.trim();
+        const done=li.querySelector("input").checked;
+        tasks.push({text,done});
+      });
+      const blob=new Blob([JSON.stringify(tasks,null,2)],{type:"application/json"});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a");a.href=url;a.download="tasks.json";a.click();
+      URL.revokeObjectURL(url);
+    };
+
+    // Weekly Chart
+    new Chart(document.getElementById("weeklyChart").getContext("2d"),{
+      type:"bar",
+      data:{labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+        datasets:[{data:[2,3,1,4,2,0,0],
+        backgroundColor:"rgba(75,192,192,0.7)",borderRadius:8}]},
+      options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
+    });
+  </script>
 </body>
 </html>
