@@ -1,93 +1,96 @@
+/* ✅ Base Styling */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
-  overflow-x: hidden;
+  background: #f8f9fa;
   color: #222;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #89f7fe, #66a6ff, #ff9a9e);
-  background-size: 400% 400%;
-  animation: gradientBG 10s ease infinite;
-  position: relative;
+  transition: background 0.3s, color 0.3s;
 }
-
-/* Gradient Animation */
-@keyframes gradientBG {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
-}
-
-/* Floating Bubbles Animation */
-.bubble {
-  position: absolute;
-  bottom: -150px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  animation: rise 20s infinite ease-in;
-}
-.bubble:nth-child(1) { left: 10%; width: 60px; height: 60px; animation-duration: 18s; }
-.bubble:nth-child(2) { left: 25%; width: 40px; height: 40px; animation-duration: 22s; }
-.bubble:nth-child(3) { left: 40%; width: 80px; height: 80px; animation-duration: 25s; }
-.bubble:nth-child(4) { left: 55%; width: 50px; height: 50px; animation-duration: 20s; }
-.bubble:nth-child(5) { left: 70%; width: 70px; height: 70px; animation-duration: 28s; }
-.bubble:nth-child(6) { left: 85%; width: 30px; height: 30px; animation-duration: 24s; }
-
-@keyframes rise {
-  0% { transform: translateY(0) scale(1); opacity: 0.5; }
-  50% { opacity: 1; }
-  100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
-}
-
 header {
   display: flex;
   justify-content: space-between;
-  padding: 15px;
-  background: #222;
-  color: #fff;
-}
-
-.card {
-  padding: 20px;
-  margin: 15px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: transform 0.2s;
-}
-.card:hover {
-  transform: translateY(-5px);
-}
-
-button {
-  margin-left: 10px;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  background: #4caf50;
+  padding: 1rem;
+  background: #4CAF50;
   color: white;
 }
-
-.progress-bar {
-  width: 100%;
-  height: 20px;
-  background: #ddd;
-  border-radius: 10px;
-  overflow: hidden;
+h1, h2 {
+  margin: 0.5rem 0;
 }
-#progressFill {
-  width: 0%;
-  height: 100%;
-  background: #4caf50;
-  transition: width 0.3s;
+button {
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
 }
 
-.dark-mode {
+/* ✅ Dark Mode */
+.dark {
   background: #121212;
   color: #eee;
 }
-.dark-mode .card {
-  background: rgba(34, 34, 34, 0.9);
-  color: #eee;
+.dark header {
+  background: #222;
+}
+.dark button {
+  background: #444;
+  color: #fff;
+}
+
+/* ✅ Task Section */
+#task-section {
+  padding: 1rem;
+}
+#task-list {
+  list-style: none;
+  padding: 0;
+}
+#task-list li {
+  padding: 8px;
+  margin: 5px 0;
+  background: #e3f2fd;
+  border-radius: 5px;
+  cursor: grab;
+}
+#task-list li.completed {
+  text-decoration: line-through;
+  background: #c8e6c9;
+}
+
+/* ✅ Progress Section */
+#progress-section, #calendar-section, #gamification-section {
+  margin: 1rem;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* ✅ Calendar */
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+#calendar div {
+  padding: 10px;
+  text-align: center;
+  background: #e0e0e0;
+  border-radius: 4px;
+}
+#calendar div.today {
+  background: #4CAF50;
+  color: #fff;
+}
+
+/* ✅ Gamification */
+#badges {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+.badge {
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: gold;
+  font-weight: bold;
 }
