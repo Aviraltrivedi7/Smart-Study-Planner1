@@ -33,7 +33,7 @@ Built with **HTML, CSS, JavaScript** and enhanced with **Chart.js visualizations
 
 1. Clone the repo:
    ```bash
-   git clone--> https://github.com/Aviraltrivedi7/Smart-Study-Planner1/edit/main/README.md
+   git clone--> https://github.com/Aviraltrivedi7/Smart-Study-Planner1
 Open index.html in your browser.
 
 Start adding tasks 🎉
