@@ -3,7 +3,7 @@
 A modern, responsive **task management web app** designed for students to plan, track, and achieve their study goals.  
 Built with **HTML, CSS, JavaScript** and enhanced with **Chart.js visualizations** & glassmorphism UI.  
 
-🔗 **Live Demo**: (https://smart-study-planner1-8nkm.vercel.app/)
+🔗 **Live Demo**: ([https://smart-study-planner1-8nkm.vercel.app/](https://smart-study-planner1-ffsf.vercel.app/))
 
 ---
 
